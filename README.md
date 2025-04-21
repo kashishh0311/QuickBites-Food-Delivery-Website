@@ -1,4 +1,4 @@
-# 🍣 QuickBites
+# 🍣 QuickBites - Food Delivery Website
 
 **QuickBites** is a lively full-stack food delivery platform serving up chef-crafted meals with a side of convenience. 🍝 Dive into our menu, order with ease, and track your delivery in a vibrant orange-and-gray interface that’s as tasty as our food. 🥐
 

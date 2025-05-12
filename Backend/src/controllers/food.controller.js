@@ -173,100 +173,6 @@ const deleteFood = asyncHandler(async (req, res) => {
   }
 });
 
-// const getAllFood = asyncHandler(async (req, res) => {
-//   try {
-//     const foodsWithRatings = await Food.aggregate([
-//       // Step 1: Lookup feedback for each food item
-//       {
-//         $lookup: {
-//           from: "feedbacks", // Collection name in MongoDB (lowercase plural form of Feedback model)
-//           localField: "feedback",
-//           foreignField: "_id",
-//           as: "feedbackDetails",
-//         },
-//       },
-//       // Step 2: Calculate average rating and total ratings
-//       {
-//         $project: {
-//           name: 1,
-//           description: 1,
-//           price: 1,
-//           category: 1,
-//           isAvailable: 1,
-//           foodImage: 1,
-//           ingredients: 1,
-//           feedback: 1, // Keep the feedback array for population if needed
-//           averageRating: {
-//             $cond: {
-//               if: { $gt: [{ $size: "$feedbackDetails" }, 0] }, // If there are feedback entries
-//               then: { $avg: "$feedbackDetails.rating" }, // Calculate average
-//               else: null, // No feedback yet
-//             },
-//           },
-//           totalRatings: { $size: "$feedbackDetails" }, // Count total ratings
-//         },
-//       },
-//       // Step 3: Round the average rating to 1 decimal place
-//       {
-//         $project: {
-//           name: 1,
-//           description: 1,
-//           price: 1,
-//           category: 1,
-//           isAvailable: 1,
-//           foodImage: 1,
-//           ingredients: 1,
-//           feedback: 1,
-//           averageRating: { $round: ["$averageRating", 1] },
-//           totalRatings: 1,
-//         },
-//       },
-//       // Step 4: Sort by average rating (descending) or name if no rating
-//       {
-//         $sort: { averageRating: -1, name: 1 },
-//       },
-//     ]);
-
-//     if (!foodsWithRatings || foodsWithRatings.length === 0) {
-//       throw new ApiError(404, "No food items found");
-//     }
-
-//     return res
-//       .status(200)
-//       .json(
-//         new ApiResponce(200, foodsWithRatings, "Food retrieved successfully")
-//       );
-//   } catch (error) {
-//     console.error("Error in getAllFood:", error);
-//     throw new ApiError(500, "Failed to retrieve food items", error.message);
-//   }
-// });
-
-// const getFoodByName = asyncHandler(async (req, res) => {
-//   const { name } = req.body;
-
-//   try {
-//     const food = await Food.findOne({ name }).populate({
-//       path: "feedback",
-//       populate: {
-//         path: "customerId",
-//         select: "name",
-//       },
-//       select: "customerId rating review ",
-//     });
-
-//     if (!food) {
-//       throw new ApiError(404, "Food not found");
-//     }
-
-//     return res
-//       .status(200)
-//       .json(new ApiResponce(200, food, "Food Founded Successfully"));
-//   } catch (error) {
-//     throw new ApiError(500, "Failed to Found food");
-//   }
-// });
-
 const getAllFood = asyncHandler(async (req, res) => {
   // const { restaurantId } = req.query || req.restaurant._id;
 
@@ -379,17 +285,6 @@ const getAllFood = asyncHandler(async (req, res) => {
   }
 });
 
-// const getAllFood = asyncHandler(async (req, res) => {
-//   const { restaurantId } = req.query;
-//   const query = restaurantId ? { restaurantId } : {};
-//   const foods = await Food.find(query)
-//     .populate("restaurantId", "name address")
-//     .lean();
-//   return res
-//     .status(200)
-//     .json(new ApiResponce(200, foods, "Food items retrieved successfully"));
-// });
-
 const getFoodByName = asyncHandler(async (req, res) => {
   const { name } = req.query; // Using query params
   const food = await Food.findOne({ name })
@@ -409,29 +304,6 @@ const getFoodByName = asyncHandler(async (req, res) => {
     .json(new ApiResponce(200, food, "Food Found Successfully"));
 });
 
-// const getAllFoodByCategory = asyncHandler(async (req, res) => {
-//   const { category } = req.body;
-
-//   try {
-//     const food = await Food.find({ category }).populate({
-//       path: "feedback",
-//       populate: {
-//         path: "customerId",
-//         select: "name",
-//       },
-//       select: "customerId rating review ",
-//     });
-
-//     if (!food) {
-//       throw new ApiError(404, "Food not found");
-//     }
-
-//     return res
-//       .status(200)
-//       .json(new ApiResponce(200, food, "Food Founded Successfully"));
-//   } catch (error) {}
-// });
-
 const getAllFoodByCategory = asyncHandler(async (req, res) => {
   const { category } = req.query;
   const foods = await Food.find({ category }).populate({
@@ -448,31 +320,6 @@ const getAllFoodByCategory = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponce(200, foods, "Foods Found Successfully"));
 });
-
-// const getAllFoodByPrice = asyncHandler(async (req, res) => {
-//   const { price } = req.body;
-
-//   try {
-//     const food = await Food.find({ price }).populate({
-//       path: "feedback",
-//       populate: {
-//         path: "customerId",
-//         select: "name",
-//       },
-//       select: "customerId rating review ",
-//     });
-
-//     if (!food) {
-//       throw new ApiError(404, "Food not found");
-//     }
-
-//     return res
-//       .status(200)
-//       .json(new ApiResponce(200, food, "Food Founded Successfully"));
-//   } catch (error) {
-//     throw new ApiError(500, "Failed to Found food");
-//   }
-// });
 
 const getAllFoodByPrice = asyncHandler(async (req, res) => {
   const { minPrice, maxPrice } = req.query;
@@ -505,30 +352,6 @@ const getAllFoodByPrice = asyncHandler(async (req, res) => {
   }
 });
 
-// const getAllFoodByRating = asyncHandler(async (req, res) => {
-//   const { rating } = req.body;
-
-//   try {
-//     const food = await Food.find({ rating }).populate({
-//       path: "feedback",
-//       populate: {
-//         path: "customerId",
-//         select: "name",
-//       },
-//       select: "customerId rating review ",
-//     });
-
-//     if (!food) {
-//       throw new ApiError(404, "Food not found");
-//     }
-
-//     return res
-//       .status(200)
-//       .json(new ApiResponce(200, food, "Food Founded Successfully"));
-//   } catch (error) {
-//     throw new ApiError(500, "Failed to Found food");
-//   }
-// });
 const getAllFoodByRating = asyncHandler(async (req, res) => {
   const { rating, restaurantId } = req.query;
   let matchStage = {};
@@ -661,31 +484,6 @@ const getAllFoodByRating = asyncHandler(async (req, res) => {
   }
 });
 
-// const getAllFoodByAvailability = asyncHandler(async (req, res) => {
-//   const { isAvailable } = req.body;
-
-//   try {
-//     const food = await Food.find({ isAvailable }).populate({
-//       path: "feedback",
-//       populate: {
-//         path: "customerId",
-//         select: "name",
-//       },
-//       select: "customerId rating review ",
-//     });
-
-//     if (!food) {
-//       throw new ApiError(404, "Food not found");
-//     }
-
-//     return res
-//       .status(200)
-//       .json(new ApiResponce(200, food, "Food Founded Successfully"));
-//   } catch (error) {
-//     throw new ApiError(500, "Failed to Found food");
-//   }
-// });
-
 const getAllFoodByAvailability = asyncHandler(async (req, res) => {
   const { isAvailable } = req.query;
   const available = isAvailable === "true"; // Convert string to boolean
@@ -703,24 +501,6 @@ const getAllFoodByAvailability = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponce(200, foods, "Foods Found Successfully"));
 });
-
-// const getAllCategory = asyncHandler(async (req, res) => {
-//   try {
-//     const categories = Food.schema.path("category").enumValues;
-
-//     if (!categories) {
-//       throw new ApiError(404, "Categories not found");
-//     }
-
-//     return res
-//       .status(200)
-//       .json(
-//         new ApiResponce(200, categories, "Categories Founded Successfully")
-//       );
-//   } catch (error) {
-//     throw new ApiError(500, "Failed to Found categories");
-//   }
-// });
 
 const getAllCategory = asyncHandler(async (req, res) => {
   const categories = Food.schema.path("category").enumValues;
@@ -774,118 +554,6 @@ const getAllFoodBySearch = asyncHandler(async (req, res) => {
   }
 });
 
-// const getFoodById = asyncHandler(async (req, res) => {
-//   const { id } = req.params;
-
-//   try {
-//     const foodWithRatings = await Food.aggregate([
-//       // Step 1: Match the specific food by ID
-//       { $match: { _id: new mongoose.Types.ObjectId(id) } },
-//       // Step 2: Lookup feedback details
-//       {
-//         $lookup: {
-//           from: "feedbacks",
-//           localField: "feedback",
-//           foreignField: "_id",
-//           as: "feedbackDetails",
-//         },
-//       },
-//       // Step 3: Populate feedback with customer info
-//       {
-//         $lookup: {
-//           from: "users",
-//           localField: "feedbackDetails.customerId",
-//           foreignField: "_id",
-//           as: "customerDetails",
-//         },
-//       },
-//       // Step 4: Project the fields we want
-//       {
-//         $project: {
-//           name: 1,
-//           description: 1,
-//           price: 1,
-//           category: 1,
-//           isAvailable: 1,
-//           foodImage: 1,
-//           ingredients: 1,
-//           feedbackDetails: {
-//             $map: {
-//               input: "$feedbackDetails",
-//               as: "fb",
-//               in: {
-//                 _id: "$$fb._id",
-//                 rating: "$$fb.rating",
-//                 review: "$$fb.review",
-//                 customerId: {
-//                   $arrayElemAt: [
-//                     "$customerDetails",
-//                     {
-//                       $indexOfArray: [
-//                         "$customerDetails._id",
-//                         "$$fb.customerId",
-//                       ],
-//                     },
-//                   ],
-//                 },
-//               },
-//             },
-//           },
-//           averageRating: {
-//             $cond: {
-//               if: { $gt: [{ $size: "$feedbackDetails" }, 0] },
-//               then: { $avg: "$feedbackDetails.rating" },
-//               else: null,
-//             },
-//           },
-//           totalRatings: { $size: "$feedbackDetails" },
-//         },
-//       },
-//       // Step 5: Round the average rating
-//       {
-//         $project: {
-//           name: 1,
-//           description: 1,
-//           price: 1,
-//           category: 1,
-//           isAvailable: 1,
-//           foodImage: 1,
-//           ingredients: 1,
-//           feedbackDetails: {
-//             $map: {
-//               input: "$feedbackDetails",
-//               as: "fb",
-//               in: {
-//                 _id: "$$fb._id",
-//                 rating: "$$fb.rating",
-//                 review: "$$fb.review",
-//                 customerId: {
-//                   name: "$$fb.customerId.name",
-//                   profileImage: "$$fb.customerId.profileImage",
-//                 },
-//               },
-//             },
-//           },
-//           averageRating: { $round: ["$averageRating", 1] },
-//           totalRatings: 1,
-//         },
-//       },
-//     ]);
-
-//     if (!foodWithRatings || foodWithRatings.length === 0) {
-//       throw new ApiError(404, "Food not found");
-//     }
-
-//     return res
-//       .status(200)
-//       .json(
-//         new ApiResponce(200, foodWithRatings[0], "Food retrieved successfully")
-//       );
-//   } catch (error) {
-//     console.error("Error in getFoodById:", error);
-//     throw new ApiError(500, "Failed to retrieve food", error.message);
-//   }
-// });
 const getFoodById = asyncHandler(async (req, res) => {
   const { id } = req.params;
 

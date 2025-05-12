@@ -65,25 +65,6 @@ const foodSchema = new Schema(
       required: true,
       trim: true,
     },
-    // rating: [
-    //   {
-    //     type: Schema.Types.ObjectId,
-    //     ref: "Feedback",
-    //   },
-    // ],
-    // review: [
-    //   {
-    //     type: Schema.Types.ObjectId,
-    //     ref: "Feedback",
-    //   },
-    // ],
-    // ingredients: [
-    //   {
-    //     type: String,
-    //     required: true,
-    //     trim: true,
-    //   },
-    // ],
     ingredients: [
       {
         type: String,

@@ -40,7 +40,7 @@ function Footer() {
         <p className="text-sm mt-2">
           With our seamless app experience and efficient delivery network, we’re
           committed to making your mealtime effortless and enjoyable. Whether
-          it’s a quick lunch, a cozy dinner, or a special treat, Quickbites is
+          it's a quick lunch, a cozy dinner, or a special treat, Quickbites is
           here to bring quality and convenience right to you—no restaurant
           hopping required.
         </p>
